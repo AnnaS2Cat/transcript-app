@@ -1,0 +1,20 @@
+.venv/
+venv/
+
+.env
+
+__pycache__/
+*.pyc
+
+#arquivos temporários
+temp/
+
+#vscode
+.vscode/
+
+#streamlit cache
+.streamlit/
+
+#sistema
+.DS_Store
+Thumbs.db
