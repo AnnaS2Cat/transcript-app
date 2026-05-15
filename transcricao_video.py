@@ -391,6 +391,62 @@ def gerar_pdf(texto):
     return caminho_pdf
 
 
+def melhorar_texto(texto):
+    """Melhora formatação da transcrição"""
+
+    try:
+
+        prompt_formatacao = f"""
+        Você é um editor profissional.
+        Reescreva a transcrição abaixo
+        deixando o texto:
+
+        - organizado
+        - com pontuação correta
+        - separado em parágrafos
+        - agradável de ler
+        - mantendo EXATAMENTE o conteúdo
+        - sem resumir
+        - sem remover informações
+
+        Apenas organize melhor a escrita.
+
+        Transcrição:
+        {texto}
+        """
+
+        resposta = client.chat.completions.create(
+
+            model="llama-3.3-70b-versatile",
+
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt_formatacao
+                }
+            ],
+
+            temperature=0.2
+        )
+
+        texto_melhorado = (
+            resposta
+            .choices[0]
+            .message
+            .content
+        )
+
+        return texto_melhorado
+
+    except Exception as erro:
+
+        st.error(
+            f"Erro ao melhorar texto: {erro}"
+        )
+
+        return texto
+
+
 def exibir_transcricao(texto):
     """Mostra transcrição"""
 
@@ -398,18 +454,54 @@ def exibir_transcricao(texto):
         "Transcrição concluída!"
     )
 
+    #limpa excesso de espaços
+    texto_formatado = (
+        texto
+        .replace(" .", ".")
+        .replace(" ,", ",")
+        .replace(" ?", "?")
+        .replace(" !", "!")
+    )
+
+    #add quebra de linha após frases
+    texto_formatado = (
+        texto_formatado
+        .replace(". ", ".\n")
+        .replace("? ", "?\n")
+        .replace("! ", "!\n")
+    )
+
+    #separa partes do vídeo
+    texto_formatado = (
+        texto_formatado
+        .replace("--- PARTE", "\n\n## 🎬 PARTE")
+    )
+
     #transcrição
     st.markdown(
         "## 📄 Transcrição"
     )
 
-    st.text_area(
-        "Texto transcrito",
-        texto,
-        height=300
-    )
+    st.markdown(
+    f"""
+    <div style="
+        background-color: #ffffff;
+        padding: 25px;
+        border-radius: 16px;
+        line-height: 1.9;
+        font-size: 16px;
+        color: #111827;
+        white-space: pre-wrap;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    ">
+    {texto_formatado}
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
-    #resumo da ia
+    #resumo ia
     with st.spinner(
         "Gerando resumo inteligente..."
     ):
@@ -422,17 +514,39 @@ def exibir_transcricao(texto):
             "## 🧠 Resumo Inteligente"
         )
 
-        st.markdown(resumo)
+        st.markdown(
+    f"""
+    <div style="
+        background-color: #ffffff;
+        padding: 25px;
+        border-radius: 16px;
+        line-height: 1.9;
+        font-size: 16px;
+        color: #111827;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    ">
+    {resumo}
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
-    #TXT
+    st.markdown("---")
+
+    st.markdown(
+        "## 📥 Downloads"
+    )
+
+    # TXT
     st.download_button(
-        label="Baixar TXT",
+        label="📄 Baixar TXT",
         data=texto,
         file_name="transcricao.txt",
         mime="text/plain"
     )
 
-    #DOCX
+    # DOCX
     caminho_docx = gerar_docx(texto)
 
     with open(
@@ -441,7 +555,7 @@ def exibir_transcricao(texto):
     ) as docx_file:
 
         st.download_button(
-            label="Baixar DOCX",
+            label="📝 Baixar DOCX",
             data=docx_file,
             file_name="transcricao.docx",
             mime=(
@@ -450,7 +564,7 @@ def exibir_transcricao(texto):
             )
         )
 
-    #PDF
+    # PDF
     caminho_pdf = gerar_pdf(texto)
 
     with open(
@@ -459,7 +573,7 @@ def exibir_transcricao(texto):
     ) as pdf_file:
 
         st.download_button(
-            label="Baixar PDF",
+            label="📚 Baixar PDF",
             data=pdf_file,
             file_name="transcricao.pdf",
             mime="application/pdf"
@@ -484,7 +598,7 @@ def main():
         "Transcreva áudios e vídeos"
     )
 
-    # abas
+    #abas
     tabs = [
         "Vídeo",
         "Áudio"
