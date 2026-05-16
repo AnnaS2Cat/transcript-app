@@ -6,6 +6,7 @@ from groq import Groq
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from pydub import AudioSegment
 from docx import Document
+import streamlit.components.v1 as components
 
 from reportlab.platypus import (
     SimpleDocTemplate,
@@ -454,7 +455,7 @@ def exibir_transcricao(texto):
         "Transcrição concluída!"
     )
 
-    #limpa excesso de espaços
+    # limpa excesso de espaços
     texto_formatado = (
         texto
         .replace(" .", ".")
@@ -463,7 +464,7 @@ def exibir_transcricao(texto):
         .replace(" !", "!")
     )
 
-    #add quebra de linha após frases
+    # add quebra de linha após frases
     texto_formatado = (
         texto_formatado
         .replace(". ", ".\n")
@@ -471,37 +472,37 @@ def exibir_transcricao(texto):
         .replace("! ", "!\n")
     )
 
-    #separa partes do vídeo
+    # separa partes do vídeo
     texto_formatado = (
         texto_formatado
         .replace("--- PARTE", "\n\n## 🎬 PARTE")
     )
 
-    #transcrição
+    # transcrição
     st.markdown(
         "## 📄 Transcrição"
     )
 
     st.markdown(
-    f"""
-    <div style="
-        background-color: #ffffff;
-        padding: 25px;
-        border-radius: 16px;
-        line-height: 1.9;
-        font-size: 16px;
-        color: #111827;
-        white-space: pre-wrap;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    ">
-    {texto_formatado}
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+        f"""
+        <div style="
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 16px;
+            line-height: 1.9;
+            font-size: 16px;
+            color: #111827;
+            white-space: pre-wrap;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        ">
+        {texto_formatado}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-    #resumo ia
+    # resumo IA
     with st.spinner(
         "Gerando resumo inteligente..."
     ):
@@ -515,22 +516,22 @@ def exibir_transcricao(texto):
         )
 
         st.markdown(
-    f"""
-    <div style="
-        background-color: #ffffff;
-        padding: 25px;
-        border-radius: 16px;
-        line-height: 1.9;
-        font-size: 16px;
-        color: #111827;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    ">
-    {resumo}
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+            f"""
+            <div style="
+                background-color: #ffffff;
+                padding: 25px;
+                border-radius: 16px;
+                line-height: 1.9;
+                font-size: 16px;
+                color: #111827;
+                border: 1px solid #e5e7eb;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            ">
+            {resumo}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
     st.markdown("---")
 
@@ -538,17 +539,20 @@ def exibir_transcricao(texto):
         "## 📥 Downloads"
     )
 
+    # gera arquivos
+    caminho_docx = gerar_docx(texto)
+    caminho_pdf = gerar_pdf(texto)
+
     # TXT
     st.download_button(
         label="📄 Baixar TXT",
         data=texto,
         file_name="transcricao.txt",
-        mime="text/plain"
+        mime="text/plain",
+        key="download_txt"
     )
 
     # DOCX
-    caminho_docx = gerar_docx(texto)
-
     with open(
         caminho_docx,
         "rb"
@@ -561,12 +565,11 @@ def exibir_transcricao(texto):
             mime=(
                 "application/vnd.openxmlformats-officedocument"
                 ".wordprocessingml.document"
-            )
+            ),
+            key="download_docx"
         )
 
     # PDF
-    caminho_pdf = gerar_pdf(texto)
-
     with open(
         caminho_pdf,
         "rb"
@@ -576,9 +579,37 @@ def exibir_transcricao(texto):
             label="📚 Baixar PDF",
             data=pdf_file,
             file_name="transcricao.pdf",
-            mime="application/pdf"
+            mime="application/pdf",
+            key="download_pdf"
+        )
+        
+def carregar_estilo():
+    """Carrega CSS e HTML personalizado"""
+
+    # CSS
+    with open(
+        "style.css",
+        encoding="utf-8"
+    ) as f:
+
+        st.markdown(
+            f"<style>{f.read()}</style>",
+            unsafe_allow_html=True
         )
 
+    # HEADER HTML
+    with open(
+        "components/header.html",
+        encoding="utf-8"
+    ) as f:
+
+        html_code = f.read()
+
+        components.html(
+            html_code,
+            height=220
+        )
+        
 
 def main():
     """Função principal"""
@@ -589,14 +620,8 @@ def main():
         layout="centered"
     )
 
-    st.header(
-        "🎙️ App Transcript",
-        divider=True
-    )
-
-    st.subheader(
-        "Transcreva áudios e vídeos"
-    )
+    # CARREGA CSS E HTML
+    carregar_estilo()
 
     #abas
     tabs = [
