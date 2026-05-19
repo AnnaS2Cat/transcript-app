@@ -7,6 +7,11 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 from pydub import AudioSegment
 from docx import Document
 import streamlit.components.v1 as components
+from utils.leitores import (
+    ler_pdf,
+    ler_txt,
+    ler_docx
+)
 
 from reportlab.platypus import (
     SimpleDocTemplate,
