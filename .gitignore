@@ -12,9 +12,6 @@ temp/
 #vscode
 .vscode/
 
-#streamlit cache
-.streamlit/cache/
-
 #sistema
 .DS_Store
 Thumbs.db
