@@ -80,6 +80,11 @@ section[data-testid="stFileUploader"] * {
     color: #374151 !important;
 }
 
+/*esconde texto padrão do uploader*/
+[data-testid="stFileUploaderDropzoneInstructions"] small {
+    display: none;
+}
+
 /*input*/
 .stTextInput input {
 

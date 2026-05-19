@@ -761,6 +761,9 @@ def main():
                 "mkv"
             ]
         )
+        st.caption(
+            "🎬 Suporta vídeos grandes de até 1GB"
+            )
 
         if file_video:
 
