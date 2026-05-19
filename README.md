@@ -1,10 +1,12 @@
 # 🎙️ App Transcript
 
-Aplicação feita com Streamlit + Groq para transcrever áudios e vídeos utilizando IA.
+Aplicação feita com Streamlit + Groq para transcrever áudios, vídeos e arquivos utilizando IA.
+
 O projeto permite:
 
 - transcrição automática de áudio
 - transcrição de vídeos grandes
+- leitura de arquivos
 - geração de resumo inteligente
 - exportação em TXT
 - exportação em DOCX
@@ -24,6 +26,7 @@ O projeto permite:
 - Pydub
 - ReportLab
 - Python-Docx
+- PyPDF
 
 ---
 
@@ -58,9 +61,21 @@ O sistema:
 
 ---
 
+## Leitura de arquivos
+
+Suporta:
+
+- PDF
+- TXT
+- DOCX
+
+O sistema extrai automaticamente o conteúdo do arquivo e gera um resumo inteligente utilizando IA.
+
+---
+
 ## Resumo inteligente com ia
 
-Após a transcrição, a ia gera automaticamente:
+Após a transcrição ou leitura do arquivo, a ia gera automaticamente:
 
 - resumo geral
 - principais pontos
@@ -93,7 +108,7 @@ para deixar a interface mais moderna e agradável.
 
 ---
 
-# ⚙️ Como rodar o projeto
+# Como rodar o projeto
 
 ## 1. Clone o repositório
 
@@ -150,7 +165,7 @@ Crie um arquivo chamado:
 e adicione:
 
 ```env
-GROQ_API_KEY= sua chave
+GROQ_API_KEY=sua_chave
 ```
 
 ---
@@ -171,6 +186,9 @@ transcript/
 ├── components/
 │   └── header.html
 │
+├── utils/
+│   └── leitores.py
+│
 ├── temp/
 │
 ├── .env
@@ -187,9 +205,10 @@ transcript/
 - vídeos grandes são divididos automaticamente
 - os arquivos temporários são removidos após o processamento
 - o resumo é gerado utilizando LLM da Groq
+- o app possui suporte para modo claro e modo escuro
 
 ---
 
 # Projeto desenvolvido para estudos de IA aplicada
 
-Aplicação focada em automação de transcrição e processamento inteligente de mídia utilizando modelos modernos de linguagem.
+Aplicação focada em automação de transcrição, leitura de documentos e processamento inteligente de mídia utilizando modelos modernos de linguagem.
