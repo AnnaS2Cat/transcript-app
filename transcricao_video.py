@@ -701,17 +701,17 @@ def main():
 
             texto = ""
 
-            # PDF
+            #PDF
             if arquivo.name.endswith(".pdf"):
 
                 texto = ler_pdf(arquivo)
 
-            # TXT
+            #TXT
             elif arquivo.name.endswith(".txt"):
 
                 texto = ler_txt(arquivo)
 
-            # DOCX
+            #DOCX
             elif arquivo.name.endswith(".docx"):
 
                 texto = ler_docx(arquivo)
@@ -735,7 +735,7 @@ def main():
             if resumo:
 
                 st.markdown(
-                    "## 🧠 Resumo Inteligente"
+                    "##🧠 Resumo Inteligente"
                 )
 
                 st.markdown(resumo)
