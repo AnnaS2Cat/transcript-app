@@ -630,12 +630,13 @@ def main():
 
     #abas
     tabs = [
-        "Vídeo",
-        "Áudio"
+    "Vídeo",
+    "Áudio",
+    "Arquivos"
     ]
 
-    tab_video, tab_audio = st.tabs(
-        tabs
+    tab_video, tab_audio, tab_arquivo = st.tabs(
+    tabs
     )
 
     #aba áudio
@@ -680,6 +681,64 @@ def main():
                 exibir_transcricao(
                     transcricao_audio
                 )
+    # aba arquivos
+    with tab_arquivo:
+
+        st.markdown(
+            "### Resumo de documentos"
+        )
+
+        arquivo = st.file_uploader(
+            "Adicione um arquivo",
+            type=[
+                "pdf",
+                "txt",
+                "docx"
+            ]
+        )
+
+        if arquivo:
+
+            texto = ""
+
+            # PDF
+            if arquivo.name.endswith(".pdf"):
+
+                texto = ler_pdf(arquivo)
+
+            # TXT
+            elif arquivo.name.endswith(".txt"):
+
+                texto = ler_txt(arquivo)
+
+            # DOCX
+            elif arquivo.name.endswith(".docx"):
+
+                texto = ler_docx(arquivo)
+
+            st.markdown(
+                "## 📄 Conteúdo Extraído"
+            )
+
+            st.text_area(
+                "Texto",
+                texto,
+                height=300
+            )
+
+            with st.spinner(
+                "Gerando resumo inteligente..."
+            ):
+
+                resumo = gerar_resumo(texto)
+
+            if resumo:
+
+                st.markdown(
+                    "## 🧠 Resumo Inteligente"
+                )
+
+                st.markdown(resumo)
 
     #aba vídeo
     with tab_video:
