@@ -496,7 +496,7 @@ def exibir_transcricao(texto):
             border-radius: 16px;
             line-height: 1.9;
             font-size: 16px;
-            color: #111827;
+            color: #111827 !important;
             white-space: pre-wrap;
             border: 1px solid #e5e7eb;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
@@ -528,7 +528,7 @@ def exibir_transcricao(texto):
                 border-radius: 16px;
                 line-height: 1.9;
                 font-size: 16px;
-                color: #111827;
+                color: #111827 !important;
                 border: 1px solid #e5e7eb;
                 box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             ">
