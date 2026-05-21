@@ -460,7 +460,7 @@ def exibir_transcricao(texto):
         "Transcrição concluída!"
     )
 
-    # limpa excesso de espaços
+    #limpa excesso de espaços
     texto_formatado = (
         texto
         .replace(" .", ".")
@@ -488,23 +488,11 @@ def exibir_transcricao(texto):
         "## 📄 Transcrição"
     )
 
-    st.markdown(
-        f"""
-        <div style="
-            background-color: #ffffff;
-            padding: 25px;
-            border-radius: 16px;
-            line-height: 1.9;
-            font-size: 16px;
-            color: #111827 !important;
-            white-space: pre-wrap;
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        ">
-        {texto_formatado}
-        </div>
-        """,
-        unsafe_allow_html=True
+    st.text_area(
+        label="",
+        value=texto_formatado,
+        height=500,
+        key="texto_transcricao"
     )
 
     # resumo IA
@@ -520,22 +508,11 @@ def exibir_transcricao(texto):
             "## 🧠 Resumo Inteligente"
         )
 
-        st.markdown(
-            f"""
-            <div style="
-                background-color: #ffffff;
-                padding: 25px;
-                border-radius: 16px;
-                line-height: 1.9;
-                font-size: 16px;
-                color: #111827 !important;
-                border: 1px solid #e5e7eb;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            ">
-            {resumo}
-            </div>
-            """,
-            unsafe_allow_html=True
+        st.text_area(
+            label="",
+            value=resumo,
+            height=300,
+            key="texto_resumo"
         )
 
     st.markdown("---")
@@ -546,6 +523,7 @@ def exibir_transcricao(texto):
 
     # gera arquivos
     caminho_docx = gerar_docx(texto)
+
     caminho_pdf = gerar_pdf(texto)
 
     # TXT
