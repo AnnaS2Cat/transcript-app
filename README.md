@@ -212,3 +212,5 @@ transcript/
 # Projeto desenvolvido para estudos de IA aplicada
 
 Aplicação focada em automação de transcrição, leitura de documentos e processamento inteligente de mídia utilizando modelos modernos de linguagem.
+
+Link do app: https://transcript-app-8q4c4qbnrjfhwfk9zaxdyg.streamlit.app/
